@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "chunk.h"
+#include "memory.h"
 
 void initChunk(Chunk *chunk)
 {
@@ -11,11 +12,11 @@ void initChunk(Chunk *chunk)
 
 void writeChunk(Chunk *chunk, uint8_t byte)
 {
-    if (chunk->capacity < chunk->count + 1)
+    if (chunk->capacity < chunk->count + 1) // this case is always hit when we initialise an array with capacity and count as 0
     {
         int oldcapacity = chunk->capacity;
         chunk->capacity = GROW_CAPACITY(chunk->capacity);
-        chunk->code = GROW_ARRAY(uint8_t, chunk->code, oldcapacity, chunk->capacity);
+        chunk->code = GROW_ARRAY(uint8_t, chunk->code, oldcapacity, chunk->capacity); 
     }
 
     chunk->code[chunk->count] = byte;
