@@ -10,6 +10,12 @@ void initChunk(Chunk *chunk)
     chunk->code = NULL;
 }
 
+void freeChunk(Chunk* chunk)
+{
+    FREE_ARRAY(uint8_t, chunk->code, chunk->capacity);
+    initChunk(chunk);      // use this to reset the memory to initial reset states which are NULL and 0
+}
+
 void writeChunk(Chunk *chunk, uint8_t byte)
 {
     if (chunk->capacity < chunk->count + 1) // this case is always hit when we initialise an array with capacity and count as 0
@@ -22,3 +28,4 @@ void writeChunk(Chunk *chunk, uint8_t byte)
     chunk->code[chunk->count] = byte;
     chunk->count++;
 }
+

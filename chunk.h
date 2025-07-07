@@ -17,6 +17,7 @@ typedef struct
 
 void initChunk(Chunk *chunk); // function to initialise a chunk which is dynamic and stores all the byte instructions
 
-void writeChunk(Chunk *chunk, uint8_t byte);
+void freeChunk(Chunk* chunk); //function to free the unused memory
+void writeChunk(Chunk *chunk, uint8_t byte); // function to write in bytes on the specified memory location
 
 #endif
