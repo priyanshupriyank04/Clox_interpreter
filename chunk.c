@@ -12,7 +12,7 @@ void initChunk(Chunk *chunk)
 
 void freeChunk(Chunk* chunk)
 {
-    FREE_ARRAY(uint8_t, chunk->code, chunk->capacity);
+    FREE_ARRAY(uint8_t, chunk->code, chunk->capacity);  //uint8_t represent 1 single byte instruction where chunk code represents a series of single byte instructions
     initChunk(chunk);      // use this to reset the memory to initial reset states which are NULL and 0
 }
 

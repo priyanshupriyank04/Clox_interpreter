@@ -6,6 +6,7 @@ int main(int argc, const char *argv[]) // argc - argument counts and argv - actu
     Chunk chunk; // chunk here is the user defined container where we are storing the dynamic array of bytecode instructions
     initChunk(&chunk);
     writeChunk(&chunk, OP_RETURN);
+    disassembleChunk(&chunk, "test chunk");
     freeChunk(&chunk);
 
     return 0;
