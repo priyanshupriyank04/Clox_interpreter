@@ -29,3 +29,8 @@ void freeValueArray(ValueArray* array) //same mechanism like chunk to free a val
     initValueArray(array);  //reset the value array to reset state with null values in count , capacity and values
 }
 
+void printValue(Value value)
+{
+    printf("%g",value);
+}
+
