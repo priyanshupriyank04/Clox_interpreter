@@ -10,7 +10,7 @@ void disassembleChunk(Chunk *chunk, const char *name)
 
     for (int offset = 0; offset < chunk->count;)
     {
-        offset = disassembleInstruction(chunk, offset);
+        offset = disassembleInstruction(chunk, offset);     
     }
 }
 
@@ -23,7 +23,7 @@ int disassembleInstruction(Chunk *chunk, int offset)
     switch (instruction)
     {
     case OP_RETURN:
-        return simpleInstruction("OP_RETURN", offset);
+        return simpleInstruction("OP_RETURN", offset);      //prints the instruction in brief along with the offset at which the next instruction is supposed to be executed
 
     default:
         printf("Unknown opcode %d\n", instruction);
