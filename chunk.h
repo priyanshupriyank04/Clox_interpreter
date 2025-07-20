@@ -14,14 +14,15 @@ typedef struct
 {
     int count;            // count of filled capacity
     int capacity;         // count of total capacity
-    uint8_t *code;        // dynamic array of storing dynamic number of instructions, once completely filled new arr of 2x size copy array and free old memory
+    uint8_t *code;        // dynamic byte (8-bit) array of storing dynamic number of instructions, once completely filled new arr of 2x size copy array and free old memory
+    int *lines;           // dynamic int array which stores the number of code lines
     ValueArray constants; // stores the constants which appear in the code including dynamic data like strings
 } Chunk;
 
 void initChunk(Chunk *chunk); // function to initialise a chunk which is dynamic and stores all the byte instructions
 
 void freeChunk(Chunk *chunk);                // function to free the unused memory
-void writeChunk(Chunk *chunk, uint8_t byte); // function to write in bytes on the specified memory location
+void writeChunk(Chunk *chunk, uint8_t byte,int line); // function to write in bytes on the specified memory location
 
 int addConstant(Chunk *chunk, Value value);
 
