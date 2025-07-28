@@ -5,5 +5,9 @@
 #include <stddef.h>    // for null pointers and counting size safely
 #include <stdint.h>     // for consistent int datatype throughout the program
 
+#define DEBUG_TRACE_EXECUTION
+
+
+
 #endif  // end of header guard
 
