@@ -6,14 +6,31 @@
 
 VM vm;
 
+static void resetStack()
+{
+    vm.stackTop = vm.stack; //since no index is specified it will directly point to the first index of the array always
+}
+
 void initVM()
 {
-
+    resetStack();
 }
 
 void freeVM()
 {
     
+}
+
+void push(Value value)
+{
+    *vm.stackTop = value;   //store value on pointer location
+    vm.stackTop++;  //increments pointer location
+}
+
+Value pop()
+{
+    vm.stackTop--;
+    return *vm.stackTop;
 }
 
 static InterpretResult run()
@@ -23,6 +40,14 @@ static InterpretResult run()
     for(;;)
     {
 #ifdef DEBUG_TRACE_EXECUTION
+    printf("           ");
+    for(Value* slot = vm.stack; slot<vm.stackTop;slot++)    //prints the whole stack everytime we call this function
+    {
+        printf("[");
+        printValue(*slot);
+        printf("]");
+    }
+    printf("\n");
     disassembleInstruction(vm.chunk, (int)(vm.ip - vm.chunk->code)); //prints the instruction dynamically for which it requires integer index vm.ip gives the current instruction position and vm.chunk->code gives the first index of the bytecode array so subtracting them gives us the index of the current instruction
 #endif
         uint8_t instruction;    //single bytecode instruction line
@@ -31,13 +56,14 @@ static InterpretResult run()
             case OP_CONSTANT:
             {
                 Value constant = READ_CONSTANT(); //reads the numeric constant via index from read byte and gives it as output 
-                printValue(constant);
-                printf("\n");
+                push(constant); //adds the value to the data stack
                 break;
             }
 
             case OP_RETURN: //op return is the code for ending the program 
             {   
+                printValue(pop());  //prints the stackTop value before popping it out
+                printf("\n");   
                 return INTERPRET_OK;    //exits the program 
             }
 
@@ -55,3 +81,4 @@ InterpretResult interpret(Chunk* chunk)
     vm.ip = vm.chunk->code; // instruction pointer keeps track of code being executed
     return run();   // helper function which helps running bytecode instructions
 }
+
