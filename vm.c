@@ -37,6 +37,12 @@ static InterpretResult run()
 {
     #define READ_BYTE() (* vm.ip++) //function to keep track and update instruction pointer/program counter
     #define READ_CONSTANT() ( vm.chunk->constants.values[READ_BYTE()]) //calls read byte to get the index of the numeric code and then uses returns it 
+    #define BINARY_OP(op) \
+        do { \
+            double b = pop(); \
+            double a = pop(); \
+            push(a op b); \
+        }   while(false)
     for(;;)
     {
 #ifdef DEBUG_TRACE_EXECUTION
@@ -101,6 +107,7 @@ static InterpretResult run()
 
     #undef READ_BYTE    //undefines the macro to ensure no program conflict
     #undef READ_CONSTANT //undefines the macro we defined earlier in the code 
+    #undef BINARY_OP    //undefines the macro defined for 4 binary operations
 }
 
 InterpretResult interpret(Chunk* chunk)
