@@ -60,6 +60,34 @@ static InterpretResult run()
                 break;
             }
 
+            case OP_ADD:    //these 4 are binary operations to be done with the topmost and second top most element in the stack 
+            {
+                BINARY_OP(+);
+                break;
+            }
+
+            case OP_SUBTRACT:
+            {
+                BINARY_OP(-);
+                break;
+            }
+
+            case OP_MULTIPLY:
+            {
+                BINARY_OP(*);
+                break;
+            }
+
+            case OP_DIVIDE:
+            {
+                BINARY_OP(/);
+                break;
+            }
+            case OP_NEGATE:     //this is the unary negation operation to be done with the topmost element of the stack
+            {
+                push(-pop());   //first pop the value negate it and then push it again on the stack to compute negate of a number
+                break;
+            }
             case OP_RETURN: //op return is the code for ending the program 
             {   
                 printValue(pop());  //prints the stackTop value before popping it out

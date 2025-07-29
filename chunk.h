@@ -8,6 +8,12 @@ typedef enum
 { // create named number type using typedef which reduces task of writing enum everytime
     OP_CONSTANT,
     OP_RETURN,
+    OP_ADD,
+    OP_SUBTRACT,
+    OP_MULTIPLY,
+    OP_DIVIDE,
+    OP_NEGATE,
+    
 } Op_code;
 
 typedef struct

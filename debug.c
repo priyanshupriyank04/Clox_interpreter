@@ -34,8 +34,11 @@ int disassembleInstruction(Chunk *chunk, int offset)
     {
     case OP_CONSTANT:
         return constantInstruction("OP_CONSTANT", chunk, offset);
+    case OP_NEGATE:
+        return simpleInstruction("OP_NEGATE", offset);  //prints the offset at which the next instruction is to be executed
     case OP_RETURN:
         return simpleInstruction("OP_RETURN", offset); // prints the instruction in brief along with the offset at which the next instruction is supposed to be executed
+
 
     default:
         printf("Unknown opcode %d\n", instruction);

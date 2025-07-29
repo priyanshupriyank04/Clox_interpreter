@@ -5,7 +5,7 @@
 
 int main(int argc, const char *argv[]) // argc - argument counts and argv - actual text passed in each argument
 {
-    initVM();   //initialise vm whenever main function is called 
+    initVM(); // initialise vm whenever main function is called
 
     Chunk chunk; // chunk here is the user defined container where we are storing the dynamic array of bytecode instructions and //function which checks whole chunk.code array and converts the human readable format of the bytecode
 
@@ -17,12 +17,13 @@ int main(int argc, const char *argv[]) // argc - argument counts and argv - actu
 
     writeChunk(&chunk, constant, 123); // manually adding the constant to the chunk data pool after the op code
 
+    writeChunk(&chunk, OP_NEGATE, 123); // prints the negate of the input value
     writeChunk(&chunk, OP_RETURN, 123);
 
     disassembleChunk(&chunk, "test chunk");
 
-    interpret(&chunk);  //function to interpret the chunk bytecode instructions
-    freeVM();   //free vm before exiting the main function 
+    interpret(&chunk); // function to interpret the chunk bytecode instructions
+    freeVM();          // free vm before exiting the main function
     freeChunk(&chunk);
 
     return 0;
