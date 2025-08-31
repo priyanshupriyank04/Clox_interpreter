@@ -28,6 +28,44 @@ static void repl(){             //it is static because repl is private to the fi
         interpret(line);    //pass on the line input to the VM 
     }
 }
+
+//runfile - function for running a .lox file via interpreter 
+static void runFile(const char* path)   //path represents the file path to run ./clox hello.lox -> here path will be of file hello.lox 
+{
+    char *source = readFile(path);  //reads entire file into memory as a string
+
+    InterpretResult result = interpret(source); //passes the entire file content to interpret() function which returns a result - success/compile/runtime error
+
+    free(source);    //free the memory once interpret is done, this is done since C doesnt have auto garbage collection so all memory initiated via malloc, readFile needs to be manually freed
+
+    if(result==INTERPRET_COMPILE_ERROR)
+    {
+        exit(65);   //exit code 65 is for compile error
+    }
+    if(result==INTERPRET_RUNTIME_ERROR)
+    {
+        exit(70);   //exit code 70 is for runtime error
+    }
+}
+
+static char* readFile(const char* path)     //function which reads entire file content and passes it into a C string 
+{
+    FILE* file = fopen(path, "rb"); //open the file at the path and rb is read and binary mode (binary mode ignores newline translations)
+    
+    fseek(file,0L, SEEK_END); //moves the file pointer to end of the file to measure the file size
+    size_t fileSize = ftell(file);   // measures the file size and stores it 
+
+    rewind(file); //moves the file pointer back to beginning of the file 
+
+    char* buffer = (char*)malloc(fileSize+1);   //create memory buffer to store the file content
+
+    size_t bytesRead = fread(buffer,sizeof(char), fileSize, file); //binary file read syntax - size_t fread(void* ptr, size_t size, size_t count, FILE* stream)
+
+    buffer[bytesRead] = '\0';  //manually add null terminator to C string to make it compatible for functions like printf() or interpret()
+
+    fclose(file);
+    return buffer;
+}
 int main(int argc, const char *argv[]) // argc - argument counts and argv - actual text passed in each argument
 {
     initVM(); // initialise vm whenever main function is called, prepares memory stack,space everything required
