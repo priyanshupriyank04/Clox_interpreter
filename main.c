@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <stdio.h> // fopen, fprintf, stderr, fseek, ftell, fread, fclose
+#include <stdlib.h> // malloc, free, exit
 #include <string.h>
 
 #include "common.h"
@@ -52,12 +52,25 @@ static char* readFile(const char* path)     //function which reads entire file c
 {
     FILE* file = fopen(path, "rb"); //open the file at the path and rb is read and binary mode (binary mode ignores newline translations)
     
+    if(file==NULL)
+    {
+        fprintf(stderr,"Could not open the file \%s\ .\n",path); 
+        exit(74);   //conventional exit code for exit i/o errors
+    }
+
     fseek(file,0L, SEEK_END); //moves the file pointer to end of the file to measure the file size
     size_t fileSize = ftell(file);   // measures the file size and stores it 
 
     rewind(file); //moves the file pointer back to beginning of the file 
 
     char* buffer = (char*)malloc(fileSize+1);   //create memory buffer to store the file content
+
+    if(buffer==NULL)
+    {
+        fprintf("Not enough memory to read \%s\.\n",path);
+        exit(74);   //prints message if error is thrown for not enough memory for fileread
+    }
+    
 
     size_t bytesRead = fread(buffer,sizeof(char), fileSize, file); //binary file read syntax - size_t fread(void* ptr, size_t size, size_t count, FILE* stream)
 
