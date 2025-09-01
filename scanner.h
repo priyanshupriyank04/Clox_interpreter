@@ -58,6 +58,7 @@ typedef struct
     TokenType type;    // type of token
     const char *start; // start pointer for token start location
     int length;        // length of the token, C string is not used here as they end up with null termination and since these tokens are sub strings so they are not directly used
+    int line;   // line number of the token
 } Token;
 
 void initScanner(const char *source);
