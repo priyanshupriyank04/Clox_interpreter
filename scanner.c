@@ -35,6 +35,15 @@ static char peek()
 {
     return *scanner.current;    //return the character being pointer by the curr ptr without updating the curr ptr
 }
+
+static char peekNext()
+{
+    if(isAtEnd())
+    {
+        return '\0';
+    }
+    return scanner.current[1];
+}
 static bool match(char expected) // function to check for dual punctuation tokens
 {
     if (isAtEnd())
@@ -89,11 +98,46 @@ static void skipWhitespace()
             scanner.line++;
             advance();
             break;
+        
+        case '/':
+            if(peekNext()=='/') //then check if next is also '/' 
+            {
+                while(peek()!='\n' && isAtEnd())    //if next is also slash and we have also reached end of line and end of comment then return 
+                {
+                    advance();
+                }
+            }
+            else
+            {
+                return; //else return out of loop and let scan token handle the slash as division operator 
+            }
+            break;
         default:
             return; // non skippable character so exit the loop
         }
     }
 }
+
+static Token string()
+{
+    while(peek()!='"' && !isAtEnd())
+    {
+        if(peek()=='\n')
+        {
+            scanner.line++;
+        }
+        advance();
+    }
+
+    if(isAtEnd())
+    {
+        return errorToken("Unterminated string.");
+    }
+
+    advance();
+    return makeToken(TOKEN_STRING);
+}
+
 
 Token scantoken()
 {
@@ -146,7 +190,10 @@ Token scantoken()
     case '>':
         return makeToken(
             match('=') ? TOKEN_GREATER_EQUAL : TOKEN_GREATER);
+    
+    case '"': return string();
     }
 
+    
     return errorToken("Unexpected character."); // else manually report unexpected token error until other token handling is done
 }
