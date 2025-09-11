@@ -111,8 +111,25 @@ static InterpretResult run()
 
 InterpretResult interpret(const char *source)
 {
-    compile(source);     // convert source->bytecode
-    return INTERPRET_OK; // for now return OK for everything
+    Chunk chunk;       // create an empty chunk
+    initChunk(&chunk); // initialise the empty chunk with defaults
+
+    if (!compile(source, &chunk)) // returns false if the source text could not be embedded into Chunk bytecode
+    {
+        freeChunk(&chunk);              // frees any memory allocated to chunk to ensure memory deallocation takes place properly
+        return INTERPRET_COMPILE_ERROR; // return Interpret compiler error
+    }
+
+    vm.chunk = &chunk;      // sets the vm chunk
+    vm.ip = vm.chunk->code; // sets the instruction pointer to the start of the chunk bytecode
+
+    InterpretResult result = run(); // run function interprets and then gives the interpret result
+
+    freeChunk(&chunk); // deallocate memory
+    return result;     // return the interpret result function output
+
+    // compile(source);     // convert source->bytecode
+    // return INTERPRET_OK; // for now return OK for everything
 
     // Manual way to interpret the bytecodes
     //  vm.chunk = chunk;   // stores the bytecode instruction
